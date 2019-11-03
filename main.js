@@ -8,7 +8,9 @@ RESOURCES = [
   ["vert_shader", "shaders/default.vert"],
   ["frag_shader", "shaders/default.frag"],
   ["frag_phong", "shaders/phong.frag"],
-  ["vert_phong", "shaders/phong.vert"]
+  ["vert_phong", "shaders/phong.vert"],
+  ["frag_cel", "shaders/cel.frag"],
+  ["vert_cel", "shaders/cel.vert"]
 ]
 
 // Import Utah Teapot geometry
@@ -45,7 +47,7 @@ function initialise_scene(resources) {
 
   // Utah Teapot
   var teapotGeometry = new THREE.TeapotBufferGeometry(5, 10, true, true, true, false, true);
-  var teapotMaterial = new THREE.ShaderMaterial({
+  var teapotPhongMaterial = new THREE.ShaderMaterial({
     vertexShader: resources.vert_phong,
     fragmentShader: resources.frag_phong,
     uniforms: {
@@ -59,8 +61,8 @@ function initialise_scene(resources) {
       viewPos: {value: camera.position}
     }
   });
-  teapotMaterial.needsUpdate = true;
-  var teapot = new THREE.Mesh(teapotGeometry, teapotMaterial);
+  teapotPhongMaterial.needsUpdate = true;
+  var teapot = new THREE.Mesh(teapotGeometry, teapotPhongMaterial);
   scene.add(teapot);
 
   // Your animation loop, which will run repeatedly and renders a new frame each time
@@ -77,10 +79,6 @@ function initialise_scene(resources) {
 
   animate();
 }
-
-
-
-
 
 /*  Asynchronously load resources
 
