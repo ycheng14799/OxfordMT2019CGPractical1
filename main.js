@@ -33,7 +33,9 @@ function initialise_scene(resources) {
 
   var renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setSize( window.innerWidth, window.innerHeight );
+    renderer.setClearColor( 0xffffff, 1);
   document.body.appendChild( renderer.domElement );
+
 
   // Camera controls
   var controls = new THREE.OrbitControls( camera, renderer.domElement );
@@ -47,6 +49,7 @@ function initialise_scene(resources) {
 
   // Utah Teapot
   var teapotGeometry = new THREE.TeapotBufferGeometry(5, 10, true, true, true, false, true);
+  // Phong shading
   var teapotPhongMaterial = new THREE.ShaderMaterial({
     vertexShader: resources.vert_phong,
     fragmentShader: resources.frag_phong,
@@ -62,7 +65,22 @@ function initialise_scene(resources) {
     }
   });
   teapotPhongMaterial.needsUpdate = true;
-  var teapot = new THREE.Mesh(teapotGeometry, teapotPhongMaterial);
+  // Cel shading
+  var teapotCelMaterial = new THREE.ShaderMaterial({
+    vertexShader: resources.vert_cel,
+    fragmentShader: resources.frag_cel,
+    uniforms: {
+      color: {value: new THREE.Vector3(1.0,1.0,0.0)},
+      viewPos: {value: camera.position}
+    }
+  });
+  teapotCelMaterial.needsUpdate = true;
+
+  var teapot = new THREE.Mesh(teapotGeometry, teapotCelMaterial);
+  //scene.add(teapot);
+
+  var cubeGeometry = new THREE.BoxGeometry(10,10,10);
+  var cube = new THREE.Mesh(cubeGeometry, teapotCelMaterial);
   scene.add(teapot);
 
   // Your animation loop, which will run repeatedly and renders a new frame each time
@@ -71,9 +89,9 @@ function initialise_scene(resources) {
 
     // Update teapot material accordingly
     teapot.material.uniforms.viewPos.value = camera.position;
+
     // Update controls
     controls.update();
-
     renderer.render( scene, camera );
   };
 
