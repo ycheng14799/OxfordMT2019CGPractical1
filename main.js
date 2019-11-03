@@ -70,8 +70,20 @@ function initialise_scene(resources) {
     vertexShader: resources.vert_cel,
     fragmentShader: resources.frag_cel,
     uniforms: {
+      lightPos: {value: light.position},
       color: {value: new THREE.Vector3(1.0,1.0,0.0)},
-      viewPos: {value: camera.position}
+      numDiffuseTones: {value: 4.0},
+      coolColor: {value: new THREE.Vector3(0.4, 0.4, 0.7)},
+      warmColor: {value: new THREE.Vector3(0.8, 0.6, 0.6)},
+      viewPos: {value: camera.position},
+      phongExponent: {value: 32.0},
+      numSpecularTones: {value: 2.0},
+      outlineThreshold: {value: 0.25},
+
+      ambientStrength: {value: 0.50},
+      coolToWarmStrength: {value: 0.125},
+      diffuseStrength: {value: 0.125},
+      specularStrength: {value: 0.25}
     }
   });
   teapotCelMaterial.needsUpdate = true;
